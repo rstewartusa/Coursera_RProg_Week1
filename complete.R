@@ -3,7 +3,7 @@ complete <- function(directory, id = 1:332) {
     
     for (i in id) {
         
-        fname <- paste("./", directory, sprintf("/%03d.csv",i), sep="")
+        fname <- paste(directory, sprintf("/%03d.csv",i), sep="")
         mon_data <- read.csv(fname, header=TRUE, sep = ",")
         
         num_complete = sum(complete.cases(mon_data))

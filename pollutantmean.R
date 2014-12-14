@@ -4,7 +4,7 @@ pollutantmean <- function(directory, pollutant, id = 1:332) {
     
     for (i in id) {
     
-        fname <- paste("./", directory, sprintf("/%03d.csv",i), sep="")
+        fname <- paste(directory, sprintf("/%03d.csv",i), sep="")
         mon_data <- read.csv(fname, header=TRUE, sep = ",")
         one_col <- mon_data[[pollutant]]
         all_data <- append(all_data, one_col)
