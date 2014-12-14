@@ -1,51 +1,16 @@
 pollutantmean <- function(directory, pollutant, id = 1:332) {
-    totalsum <- 0
-    totalcount <- 0
+
+    all_data <- vector('numeric')    
     
     for (i in id) {
-        
-        ## generate the filename padding
-        if (i < 10) {
-            padding="00"
-        }
-        else if (i >= 10 && i < 100) {
-            padding="0"
-        }
-        else if (i >= 100 && i < 1000) {
-            padding=""
-        }
-        else {
-            print ("ERROR: unexpected filename (>999)")
-            return
-        }
-        
-        ## create filename padding
-        fname <- paste(directory, "/", padding, i, ".csv", sep="")
-        
-        ## read in file
+    
+        fname <- paste(directory, sprintf("/%03d.csv",i), sep="")
         mon_data <- read.csv(fname, header=TRUE, sep = ",")
-
-        ## select appropraite column
-        if (pollutant == "sulfate") {
-            one_col <- mon_data$sulfate
-        } 
-        else if (pollutant == "nitrate") {
-            one_col <- mon_data$nitrate
-        } 
-        else {
-            print ("ERROR: unexpected pollutant")
-            return
-        }
-            
-        is_valid <- !is.na(one_col)
-        valid_col <- one_col[is_valid]
-        
-        totalcount <- totalcount + length(valid_col)
-        totalsum <- totalsum + sum(valid_col)
+        one_col <- mon_data[[pollutant]]
+        all_data <- append(all_data, one_col)
     }
     
-    calcmean <- totalsum / totalcount
-    return(calcmean)
+    return(mean(all_data,na.rm=TRUE))
 }
   
 
