@@ -26,10 +26,10 @@ pollutantmean <- function(directory, pollutant, id = 1:332) {
         mon_data <- read.csv(fname, header=TRUE, sep = ",")
 
         ## select appropraite column
-        if (pollutant = "sulfate") {
+        if (pollutant == "sulfate") {
             one_col <- mon_data$sulfate
         } 
-        else if (pollutant = "nitrate") {
+        else if (pollutant == "nitrate") {
             one_col <- mon_data$nitrate
         } 
         else {
@@ -39,9 +39,13 @@ pollutantmean <- function(directory, pollutant, id = 1:332) {
             
         is_valid <- !is.na(one_col)
         valid_col <- one_col[is_valid]
-        totalcount <- totalcount + 1
+        
+        totalcount <- totalcount + length(valid_col)
         totalsum <- totalsum + sum(valid_col)
     }
+    
+    calcmean <- totalsum / totalcount
+    return(calcmean)
 }
   
 
