@@ -4,7 +4,7 @@ pollutantmean <- function(directory, pollutant, id = 1:332) {
     
     for (i in id) {
     
-        fname <- paste(directory, sprintf("/%03d.csv",i), sep="")
+        fname <- paste("./", directory, sprintf("/%03d.csv",i), sep="")
         mon_data <- read.csv(fname, header=TRUE, sep = ",")
         one_col <- mon_data[[pollutant]]
         all_data <- append(all_data, one_col)
@@ -15,20 +15,19 @@ pollutantmean <- function(directory, pollutant, id = 1:332) {
   
 
 complete <- function(directory, id = 1:332) {
-  ## 'directory' is a character vector of length 1 indicating
-  ## the location of the CSV files
-  
-  ## 'id' is an integer vector indicating the monitor ID numbers
-  ## to be used
-  
-  ## Return a data frame of the form:
-  ## id nobs
-  ## 1  117
-  ## 2  1041
-  ## ...
-  ## where 'id' is the monitor ID number and 'nobs' is the
-  ## number of complete cases
+    output <- data.frame(id = vector('integer'), nobs = vector('integer'))
+    
+    for (i in id) {
+        
+        fname <- paste("./", directory, sprintf("/%03d.csv",i), sep="")
+        mon_data <- read.csv(fname, header=TRUE, sep = ",")
+        
+        num_complete = sum(complete.cases(mon_data))
+        output <- rbind (output, data.frame(id = c(i), nobs = c(num_complete)))
+    }
+    return(output)
 }
+
 
 corr <- function(directory, threshold = 0) {
   ## 'directory' is a character vector of length 1 indicating
